@@ -62,7 +62,7 @@
                     <div class="search-input">
                         <input type="text" name="searchValue" placeholder="배우고 싶은 강좌를 찾아보세요." maxlength="100">
                         <button type="submit">
-                            <img th:src="@{/images/searchicon.png}" alt="search"/>
+                            <img src="/images/searchicon.png" alt="search"/>
                         </button>
                     </div>
                 </div>
@@ -81,22 +81,64 @@
     <div class="course-container">
         <h2>K-MOOC에서 추천하는 강좌 리스트</h2>
         <div class="course-list">
-            <th:block th:each="item, status:${mainCourseList}">
-                <div class="course-card pointer" th:attr="data-course_id=${item.courseId}">
-                    <div class="course-image">
-                        <img src="/images/thumbnail/thumbnail1.jpg" th:alt="${item.title}">
-                        <span class="badge ongoing">진행중</span>
-                        <span class="badge popular" th:if="${item.isCreditBank==1}">학점은행제</span>
-                    </div>
-                    <div class="course-info">
-                        <h3 th:text="${item.title}"></h3>
-                        <p><span th:text="${item.teacherName}"></span><br><span th:text="${item.institutionName}"></span></p>
-                        <p class="course-date" th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
-                        <div class="tags">
-                        </div>
+        
+            <div class="course-card pointer" >
+                <div class="course-image">
+                    <img src="/images/thumbnail/thumbnail1.png" >
+                    <span class="badge ongoing">진행중</span>
+                    <span class="badge popular">학점은행제</span>
+                </div>
+                <div class="course-info">
+                    <h3 th:text="${item.title}"></h3>
+                    <p><span th:text="${item.teacherName}"></span><br><span>사회</span></p>
+                    <p class="course-date">2025</p>
+                    <div class="tags">
                     </div>
                 </div>
-            </th:block>
+            </div>
+            <div class="course-card pointer" >
+                <div class="course-image">
+                    <img src="/images/thumbnail/thumbnail2.png" >
+                    <span class="badge ongoing">진행중</span>
+                    <span class="badge popular">학점은행제</span>
+                </div>
+                <div class="course-info">
+                    <h3 th:text="${item.title}"></h3>
+                    <p><span th:text="${item.teacherName}"></span><br><span>사회</span></p>
+                    <p class="course-date">2025</p>
+                    <div class="tags">
+                    </div>
+                </div>
+            </div>
+            <div class="course-card pointer" >
+                <div class="course-image">
+                    <img src="/images/thumbnail/thumbnail3.jpg" >
+                    <span class="badge ongoing">진행중</span>
+                    <span class="badge popular">학점은행제</span>
+                </div>
+                <div class="course-info">
+                    <h3 th:text="${item.title}"></h3>
+                    <p><span th:text="${item.teacherName}"></span><br><span>사회</span></p>
+                    <p class="course-date">2025</p>
+                    <div class="tags">
+                    </div>
+                </div>
+            </div>
+            <div class="course-card pointer" >
+                <div class="course-image">
+                    <img src="/images/thumbnail/thumbnail4.png" >
+                    <span class="badge ongoing">진행중</span>
+                    <span class="badge popular">학점은행제</span>
+                </div>
+                <div class="course-info">
+                    <h3 th:text="${item.title}"></h3>
+                    <p><span th:text="${item.teacherName}"></span><br><span>사회</span></p>
+                    <p class="course-date">2025</p>
+                    <div class="tags">
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
     <div class="course-container">
@@ -151,57 +193,73 @@
 
 <script layout:fragment="script" th:inline="javascript">
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const noticeDisplay = document.getElementById("notice-display");
-        const dropdownIcon = document.querySelector(".dropdown-icon a");
-        let currentIndex = 0;
+   document.addEventListener("DOMContentLoaded", function () {
+  const noticeDisplay = document.getElementById("notice-display");
+  const dropdownIcon = document.querySelector(".dropdown-icon a");
+  let currentIndex = 0;
 
-        // 공지사항 표시
-        function displayNotice(notice) {
-            // 기존 내용 숨기기
-            noticeDisplay.classList.remove("active");
-            noticeDisplay.classList.add("hide");
+  // 하드코딩된 공지사항 목록
+  const notices = [
+    {
+      title: "학점은행제 기준 변경사항 안내",
+      date: "2025-07-20"
+    },
+    {
+      title: "K-MOOC 여름학기 개강 안내",
+      date: "2025-07-15"
+    },
+    {
+      title: "시스템 점검 안내 (8/1 00:00~02:00)",
+      date: "2025-07-25"
+    }
+  ];
 
-            // 슬라이드 전환 대기
-            setTimeout(() => {
-                // 새 내용 삽입
-                noticeDisplay.innerHTML = `
-                    <p class="notice-text"><a href="/main/notice/view/${notice.noticeId}">${notice.title}</a></p>
-                    <p class="notice-date">${(notice.createdAt.split("T"))[0]}</p>
-                `;
+  // 공지사항 표시
+  function displayNotice(notice) {
+    // 기존 내용 숨기기 (애니메이션용 클래스 조작)
+    noticeDisplay.classList.remove("active");
+    noticeDisplay.classList.add("hide");
 
-                // 새 내용 표시
-                noticeDisplay.classList.remove("hide");
-                noticeDisplay.classList.add("active");
-            }, 500); // 이전 애니메이션 종료 후 새로운 내용 표시
-        }
+    setTimeout(() => {
+      // 새 내용 삽입
+      noticeDisplay.innerHTML = `
+        <p class="notice-text">공지사항 안내</p>
+        <p class="notice-date">${notice.title}</p>
+        <p class="notice-date">${notice.date}</p>
+      `;
 
-        // 공지사항 순환
-        function rotateNotices() {
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % notices.length; // 다음 인덱스
-                displayNotice(notices[currentIndex]); // 공지사항 업데이트
-            }, 5000); // 5초 간격
-        }
+      // 새 내용 표시
+      noticeDisplay.classList.remove("hide");
+      noticeDisplay.classList.add("active");
+    }, 500);
+  }
 
-        // 공지사항 직접 전환 (드롭다운 아이콘 클릭 시)
-        dropdownIcon.addEventListener("click", () => {
-            currentIndex = (currentIndex + 1) % notices.length; // 다음 인덱스
-            displayNotice(notices[currentIndex]); // 공지사항 업데이트
-        });
+  // 자동 순환
+  function rotateNotices() {
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % notices.length;
+      displayNotice(notices[currentIndex]);
+    }, 5000);
+  }
 
-        // 초기화
-        if (notices.length > 0) {
-            noticeDisplay.classList.add("active"); // 첫 공지사항 표시
-            displayNotice(notices[currentIndex]);
-            rotateNotices();
-        } else {
-            noticeDisplay.innerHTML = `
-                <p class="notice-text">등록된 공지사항이 없습니다.</p>
-                <p class="notice-date"></p>
-            `;
-        }
-    });
+  // 수동 전환 (아이콘 클릭 시)
+  dropdownIcon.addEventListener("click", (e) => {
+    e.preventDefault();
+    currentIndex = (currentIndex + 1) % notices.length;
+    displayNotice(notices[currentIndex]);
+  });
+
+  // 초기화
+  if (notices.length > 0) {
+    noticeDisplay.classList.add("active");
+    displayNotice(notices[currentIndex]);
+    rotateNotices();
+  } else {
+    noticeDisplay.innerHTML = `
+      <p class="notice-text">등록된 공지사항이 없습니다.</p>
+    `;
+  }
+});
 
     const images = document.querySelectorAll('.main-banner img');
     const dotsContainer = document.getElementById('bannerDots');
